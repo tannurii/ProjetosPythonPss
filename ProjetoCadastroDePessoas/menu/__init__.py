@@ -8,7 +8,6 @@ def linha(tam=42):
     """
     print('-' * tam)
 
-
 def cabeçalho(msg):
     """
     Função que imprime um cabeçalho formatado
