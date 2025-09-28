@@ -40,3 +40,4 @@ def menu(a, b, c, d, e):
         print(f'\033[33m{i + 1} - \033[m\033[34m{c}\033[m')
     linha()
 
+
