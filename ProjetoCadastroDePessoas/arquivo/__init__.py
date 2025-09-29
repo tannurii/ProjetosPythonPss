@@ -51,6 +51,11 @@ def LerArquivo(arq):
             print()
 
 def ArquivoÍndice(arq):
+    """
+    Função que lista o arquivo com índices.
+    :param arq: Nome do arquivo.
+    :return: Sem retorno.
+    """
     try:
         a = open(arq, 'rt')
     except:
@@ -87,32 +92,31 @@ def CadastrarNoArquivo(arq, nome='desconhecido', idade=0):
 
 def RemoverCadastro(arq, msg):
         while True:
-            try:
-                remover = int(input(msg))
-            except:
-                print('\033[31mERRO: Digite apenas o índice.\033[m')
-                sleep(1.5)
-            else:
-                a = open(arq, 'r')
-                lista = a.readlines()
+            while True:
                 try:
-                    if lista[remover]:
-                        break
-                except IndexError:
-                    print('\033[31mERRO: Digite apenas os índices listados.\033[m')
+                    remover = int(input(msg))
+                except:
+                    print('\033[31mERRO: Digite apenas o índice.\033[m')
                     sleep(1.5)
-        while True:
+                else:
+                    a = open(arq, 'r')
+                    lista = a.readlines()
+                    try:
+                        if lista[remover]:
+                            break
+                    except IndexError:
+                        print('\033[31mERRO: Digite apenas os índices listados.\033[m')
+                        sleep(1.5)
+
             try:
                 with open(arq, 'r') as arquivo:
                     linhas = arquivo.readlines()
                     linhas.pop(remover)
             except:
-                print('\033[31mERRO: Não foi possível ler o arquivo.')
+                print('\033[31mERRO: Não foi possível ler o arquivo.\033[m')
                 sleep(1.5)
                 break
-            else:
-                break
-        while True:
+
             try:
                 with open(arq, 'w') as arquivo:
                     arquivo.writelines(linhas)
@@ -124,3 +128,15 @@ def RemoverCadastro(arq, msg):
                 print('\033[35mCadastro excluído com sucesso!\033[m')
                 sleep(1.5)
                 break
+
+def AlterarArquivo(arq, msg):
+    ArquivoÍndice(arq)
+    while True:
+        try:
+            alterar = int(input('msg'))
+        except ValueError:
+            print('\033[31mERRO: Digite apenas o índice.\033[m')
+        else:
+            ...
+
+
