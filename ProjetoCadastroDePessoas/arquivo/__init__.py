@@ -130,13 +130,24 @@ def RemoverCadastro(arq, msg):
                 break
 
 def AlterarArquivo(arq, msg):
-    ArquivoÍndice(arq)
-    while True:
-        try:
-            alterar = int(input('msg'))
-        except ValueError:
+    try:
+            alterar = int(input(msg))
+    except ValueError:
             print('\033[31mERRO: Digite apenas o índice.\033[m')
-        else:
-            ...
-
-
+    else:
+            with open(arq, 'r') as arquivo:
+                lista = []
+                for linha in arquivo:
+                    dado = linha.split(';')
+                    dado[1] = dado[1].replace('\n', '')
+                    lista.append(dado)
+                print(dado)
+                print()
+                try:
+                    print('[0] para nome\n'
+                          '[1] para idade')
+                    alterar = int(input('Qual dado deseja editar? '))
+                except ValueError:
+                    print('\033[31mERRO: Digite apenas o índice.\033[m')
+                else:
+                    ...

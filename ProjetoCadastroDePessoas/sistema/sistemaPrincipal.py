@@ -43,4 +43,5 @@ while True:
                     ArquivoÍndice(arquivo)
                     RemoverCadastro(arquivo, 'Qual cadastro deseja remover? ')
                 case 4:
-                    ...
+                    ArquivoÍndice(arquivo)
+                    AlterarArquivo(arquivo, 'Qual cadastro deseja alterar? ')
