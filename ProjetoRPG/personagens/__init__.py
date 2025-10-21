@@ -1,8 +1,7 @@
 """
 ROTEIRO:
     classes Heróis:
-        Cavaleiro (base) - HP: 120 / ATA: 30 / HAB: +20 DMG (2 turnos)
-        Feitiçeiro (base) - HP: 80 / ATA: 40 / HAB: +10 HEAL (1 turno)
+        Cavaleiro (base) - HP: 120 / ATA: 20-30 / HAB: +20 DMG (2 turnos)
 
     classes Monstros:
         Goblin - HP: 70 / ATA: 20
@@ -10,10 +9,6 @@ ROTEIRO:
         Fantasma - HP: 80 / ATA: 30 / HAB: +20 DMG (2 turnos)
 
     Itens:
-        Espada Encantada: +10 DMG
-        Varinha: +10 DMG
-        Armadura de Prata: +30 HP
-        Capa: +30 HP
         Poção de Cura: +30 HEAL
 
     Experiência:
@@ -23,6 +18,11 @@ ROTEIRO:
         Se Herói perde o combate:
             Perde o progresso.
 
+    Combate:
+        Três ações:
+            1 - Atacar
+            2 - Usar HAB
+            3 - Usar item
 -> Proximos passos: Adicionar ações de ataque e turnos até finalizar o combate. Adicionar dano crítico.
 """
 from random import randint
@@ -34,33 +34,43 @@ class Cavaleiro:
     def __init__(self, nome):
         self.nome = nome
         self.hp = 120
-        self.ata = 30
         print(f"Boa sorte em sua jornada, Cavaleiro {nome}!")
 
-class Feitiçeiro:
-    def __init__(self, nome):
-        self.hp = 80
-        self.ata = 40
-        print(f"Boa sorte em sua jornada, Feitiçeiro {nome}!")
-
+    def ataque(self, monstro):
+        dmg = randint(20, 30)
+        monstro.hp -= dmg
+        if dmg > 25:
+            print(f"\033[31mDANO CRÍTICO!\033[m")
+            print(f"{dmg} de dano!")
+        else:
+            print(f"{self.nome} causou {dmg} de dano!")
 #---------------------------------------------------------------
 
 # CLASSES MOSNTROS
 class Goblin:
+    from random import randint
+
     def __init__(self):
         self.nome = "Goblin"
         self.hp = 70
-        self.ata = 20
+    def ataque(self, heroi):
+        dmg = randint(10, 20)
+        heroi.hp -= dmg
+        if dmg < 18:
+            print(f"\033[31mDANO CRÍTICO!\033[m")
+            print(f"{dmg} de dano!")
+        else:
+            print(f'{self.nome} causou {dmg} de dano!')
 
-class Ladrão:
+class Ladrao:
     def __init__(self):
         self.hp = 100
-        self.ata = 30
+
 
 class Fantasma:
     def __init__(self):
         self.hp = 80
-        self.ata = 30
+
 #---------------------------------------------------------------
 # CLASSE COMBATE
 class Combate:
@@ -72,25 +82,41 @@ class Combate:
         print(F"{heroi.nome} encontrou um {monstro.nome}!")
         sleep(2)
 
-    def atacar(self):
+    def luta(self, heroi, monstro):
         vez = randint(0,1)
-        cont = 0
-        if cont == 0:
-            if vez == 0:
-                print(f'vez do {monstro.nome}!')
+        if vez == 0:
+            print(f"{monstro.nome} começa!")
+            monstro.ataque(heroi)
+        else:
+            print(f"{heroi.nome} começa!")
+            heroi.ataque(monstro)
+        while True:
+            if heroi.hp <= 0:
+                heroi.hp = 0
+                print(f'O combate terminou!')
+                print(f'HP {heroi.nome}: {heroi.hp}')
+                print(f"HP {monstro.nome}: {monstro.hp}")
+                break
+            elif monstro.hp <= 0:
+                monstro.hp = 0
+                print(f'O combate terminou!')
+                print(f'HP {heroi.nome}: {heroi.hp}')
+                print(f"HP {monstro.nome}: {monstro.hp}")
+                break
+            elif vez == 0:
+                print(f"Vez do {heroi.nome}")
                 sleep(2)
-                self.heroi.hp -= self.monstro.ata
-                print(f'{monstro.nome} ataca! +{monstro.ata} DMG - {heroi.nome} HP: {heroi.hp}')
+                heroi.ataque(monstro)
                 sleep(2)
-
+                vez = 1
             elif vez == 1:
-                print(f'Sua vez!')
+                print(f"Vez do {monstro.nome}")
                 sleep(2)
-                self.monstro.hp -= self.heroi.ata
-                print(f'{heroi.nome} ataca! +{heroi.ata} DMG - {monstro.nome} HP: {monstro.hp}')
+                monstro.ataque(heroi)
                 sleep(2)
+                vez = 0
 
-heroi = Cavaleiro("Lucas")
+jogador = Cavaleiro("Lucas")
 monstro = Goblin()
-combate = Combate(heroi, monstro)
-combate.atacar()
+combate = Combate(jogador, monstro)
+combate.luta(jogador, monstro)
